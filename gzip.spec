@@ -4,7 +4,7 @@
 #
 Name     : gzip
 Version  : 1.6
-Release  : 13
+Release  : 14
 URL      : http://mirrors.kernel.org/gnu/gzip/gzip-1.6.tar.xz
 Source0  : http://mirrors.kernel.org/gnu/gzip/gzip-1.6.tar.xz
 Summary  : No detailed summary available
