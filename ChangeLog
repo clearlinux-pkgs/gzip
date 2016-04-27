@@ -1,4 +1,62 @@
+2016-04-26  Jim Meyering  <meyering@fb.com>
+
+	version 1.8
+	* NEWS: Record release date.
+
+	gnulib: update to latest
+
+2016-04-19  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzip: simplify by closing ourselves
+	This simplifies the previous fix, by avoiding the use of the
+	closein module.  That module was problematic, as gzip normally
+	does not use stdio for output and never uses it for input.
+	Also, it is a heavyweight module, as it drags many files into lib
+	(c-ctype.c, c-ctype.h, closein.c, closein.h, closeout.c, closeout.h,
+	close-stream.c, close-stream.h, config.charset, c-strcasecmp.c,
+	c-strcaseeq.h, c-strcase.h, c-strncasecmp.c, fpending.c, fpending.h,
+	freadahead.c, freadahead.h, localcharset.c, localcharset.h, mbrtowc.c,
+	mbsinit.c, quotearg.c, quotearg.h, quote.h, ref-add.sin, ref-del.sin,
+	streq.h, wctype-h.c, wctype.in.h) and into m4 (closein.m4, closeout.m4,
+	close-stream.m4, codeset.m4, configmake.m4, fpending.m4, freadahead.m4,
+	glibc21.m4, localcharset.m4, locale-fr.m4, locale-ja.m4, locale-zh.m4,
+	mbrtowc.m4, mbsinit.m4, mbstate_t.m4, quotearg.m4, wctype_h.m4),
+	and these files are thus no longer needed.
+	* bootstrap.conf (gnulib_modules): Remove closein.
+	* gzip.c: Don't include closein.h.
+	(stdin_was_read): New static var.
+	(main): Don't use close_stdin.
+	Invoke finish_out to exit after outputting via stdio's stdout.
+	Close stdin after reading it.
+	Restore previous way of closing stdout.
+	(treat_stdin): Record that stdin was read.
+	(finish_out): New function.
+
+	gzip: fix bug with -l output to pipes
+	Problem reported by Christian Franke via Eric Blake in:
+	http://bugs.gnu.org/23314
+	* NEWS: Mention this.
+	* gzip.c (main): Do not close stdout twice when given -l.
+	Instead, -l now just fflushes stdout, so that fdatasync
+	can synchronize it if --synchronize is also specified.
+	* tests/list: New test case.
+	* tests/Makefile.am (TESTS): Add it.
+
+2016-03-28  Paul Eggert  <eggert@cs.ucla.edu>
+
+	Port to Oracle Solaris Studio 12.4
+	Problem reported by Kiyoshi KANAZAWA in: http://bugs.gnu.org/23133
+	* NEWS: Document this.
+	* configure.ac (ASMV): Do not define if NO_ASM is
+	anywhere in DEFS; it doesn't need to be surrounded by white space.
+	* lib/match.c: Do not use x86 version if __x86_64__ is defined.
+
 2016-03-27  Jim Meyering  <meyering@fb.com>
+
+	maint: post-release administrivia
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* cfg.mk (old_NEWS_hash): Auto-update.
 
 	version 1.7
 	* NEWS: Record release date.

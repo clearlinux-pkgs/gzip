@@ -1,5 +1,19 @@
 GNU gzip NEWS                                    -*- outline -*-
 
+* Noteworthy changes in release 1.8 (2016-04-26) [stable]
+
+** Bug fixes
+
+  gzip -l no longer falsely reports a write error when writing to a pipe.
+  [bug introduced in gzip-1.7]
+
+  Port to Oracle Solaris Studio 12 on x86-64.
+  [bug present since at least gzip-1.2.4]
+
+  When configuring gzip, ./configure DEFS='...-DNO_ASM...' now
+  suppresses assembler again.  [bug introduced in gzip-1.3.5]
+
+
 * Noteworthy changes in release 1.7 (2016-03-27) [stable]
 
 ** Changes in behavior
