@@ -4,7 +4,7 @@
 #
 Name     : gzip
 Version  : 1.8
-Release  : 19
+Release  : 20
 URL      : http://mirrors.kernel.org/gnu/gzip/gzip-1.8.tar.xz
 Source0  : http://mirrors.kernel.org/gnu/gzip/gzip-1.8.tar.xz
 Summary  : No detailed summary available
