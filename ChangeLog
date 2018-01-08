@@ -1,4 +1,351 @@
+2018-01-07  Jim Meyering  <meyering@fb.com>
+
+	version 1.9
+	* NEWS: Record release date.
+
+2018-01-06  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzexe: port to macOS mktemp
+	Problem reported by Jeffrey Walton (Bug#30000).
+	* gzexe.in, zdiff.in, zgrep.in:
+	Don’t assume that mktemp works when given no arguments,
+	as this is not true for macOS.  Instead, use a syntax
+	that should work with coreutils, NetBSD, and macOS.
+	While we’re in the neighborhood, be more consistent about how program
+	names are used in temporary file names.  Also, watch out for TMPDIR
+	values that are not absolute file names, since they can cause problems
+	(e.g., leading "-").
+
+2018-01-03  Jim Meyering  <meyering@fb.com>
+
+	maint: update gnulib and copyright dates for 2018
+	* gnulib: Update to latest.
+	* bootstrap: Update from gnulib.
+	* all files: Run "make update-copyright".
+
+2017-12-16  Jim Meyering  <meyering@fb.com>
+
+	build: update gnulib to latest
+
+2017-11-24  Paul Eggert  <eggert@cs.ucla.edu>
+
+	maint: zforce and zmore exit status cleanup
+	Problem reported by Nelson H. F. Beebe.
+	* zforce.in, zmore.in: On failure, exit with status 1 instead of
+	with whatever failing status that printf or mv exited with.
+
+2017-11-23  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzexe: ensure file always exists
+	* gzexe.in: When in a filesystem that does not support symlinks,
+	use rm+cp rather than mv to make backups, so that the argument
+	file always exists.
+
+2017-11-23  Jim Meyering  <meyering@fb.com>
+
+	build: update gnulib to latest
+
+2017-11-16  Jim Meyering  <meyering@fb.com>
+
+	gzexe: work even without the ability to make a hard link
+	* gzexe.in: When ln -f fails to create a "~"-style backup,
+	fall back to using mv -f.
+	Reported by Bruno Haible in http://debbugs.gnu.org/29266
+
+2017-11-15  Jim Meyering  <meyering@fb.com>
+
+	build: make each generated script unwritable
+	* Makefile.am (.in): Ensure that each generated script is unwritable.
+	This makes it less likely that someone (even me) will mistakenly
+	modify one of those generated files.
+
+2017-11-13  Jim Meyering  <meyering@fb.com>
+
+	zless, znew: exit 1 upon --help or --version write failure
+	* zless.in: Exit 1 upon --help or --version write error.
+	* znew.in: Likewise.
+
+2017-11-12  Paul Eggert  <eggert@cs.ucla.edu>
+
+	maint: script diagnostics status cleanup
+	Problem reported by Bruno Haible (Bug#29266#20).
+	* NEWS: Mention this.
+	* gunzip.in, gzexe.in, zcat.in, zcmp.in, zdiff.in, zforce.in:
+	* zgrep.in, zless.in, zmore.in, znew.in:
+	Use printf instead of echo if the argument might contain ‘\’, at
+	least in theory.  Don’t assume printf exits with status 1 on
+	failure; it might be some other positive status.
+	* gzexe.in: Use printf consistently instead of echo, and
+	proscribe it instead of echo.
+
+	tests: don’t be so strict about timestamps
+	* tests/timestamp: We’ve had many false alarms about timestamps
+	that are not gzip problems, but instead are problems with ‘touch’.
+	Attempt to work around them by not trusting ‘touch’ so much.
+	Problems and parts of solutions proposed by Bruno Haible.
+
+2017-11-10  Paul Eggert  <eggert@cs.ucla.edu>
+
+	build: update gnulib submodule to latest
+
+2017-11-09  Jim Meyering  <meyering@fb.com>
+
+	gnulib: update to latest
+
+	maint: use noreturn, not ATTRIBUTE_NORETURN
+	Use gnulib's stdnoreturn module so we can include
+	<stdnoreturn.h> and the "noreturn" helper macro, thus
+	replacing the definition and uses of ATTRIBUTE_NORETURN.
+	* bootstrap.conf (gnulib_modules): Add stdnoreturn.
+	* gzip.h (ATTRIBUTE_NORETURN): Remove definition.
+	Include stdnoreturn.h and use "noreturn" for each
+	ATTRIBUTE_NORETURN-adorned function declaration.
+	* gzip.c (do_exit, try_help): Use "noreturn".
+
+	tests: unpack-invalid: correct and clean up a test
+	* tests/unpack-invalid: There was a logic error that would have
+	caused this test to ignore a failure if first iteration of the
+	loop set fail=1 and the second one reset it to 0.  Also, use
+	"returns_ 1 ...", to require an exit status of 1.
+
+2017-11-07  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzip: diagnose out-of-range MTIME
+	This seems to be the problem reported by Bruno Haible for GNU/Hurd
+	i386 with touch 8.26 and glibc 2.24 (Bug#29033#20).
+	* NEWS: Document this.
+	* gzip.c (get_method): If MTIME is out of range for
+	this platform, warn and substitute the nearest in-range
+	value, instead of silently ignoring it.
+	(do_list): Remove no-longer-needed test for unknown time stamp.
+
+2017-11-06  Paul Eggert  <eggert@cs.ucla.edu>
+
+	misc: diagnose year-2038 configuration problems
+	* bootstrap.conf (gnulib_modules): Add year2038.
+	* m4/.gitignore: Add year2038.m4[
+
+	maint: remove IMPORT_FROM_GETTEXT
+	* bootstrap.conf (IMPORT_FROM_GETTEXT): Remove.
+	This is a relic from older Gnulib, and has no effect now.
+
+2017-10-29  Jim Meyering  <meyering@fb.com>
+
+	tests/unpack-valid: port to printf that do not grok hex
+	Many versions of printf do not handle hexadecimal in a format string,
+	so this test would fail.
+	* tests/init.cfg (hex_printf_): Copied from grep's tests/init.cfg.
+	* tests/unpack-valid: Use hex_printf_.
+	Reported by Bruno Haible in https://bugs.gnu.org/29033#26
+
+	gnulib: update to latest; also update tests/init.sh from gnulib
+
+	gzip: fix bug with any upper case custom ('-S'-specified) suffix
+	Any user-specified suffix with an upper case
+	letter would fail to match desired file.
+	* gzip.c (get_suffix): First, arrange to have only one return
+	point rather than two. Put a lower-cased (just-malloc'd) copy
+	of z_suffix in the suffix vector, and free it before returning.
+	* tests/upper-suffix: New file.
+	* tests/Makefile.am (TESTS): Add it.
+	* NEWS: Mention it.
+	Reported by meo@xenialab.it in https://bugs.gnu.org/29006
+
+2017-10-16  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzip: fix bug in unpack EOB check
+	Problem reported by Vidar Holen (Bug#28861).
+	* NEWS: Mention fix.
+	* tests/unpack-valid: New test.
+	* tests/Makefile.am (TESTS): Add it.
+	* unpack.c (build_tree): Report an error if Huffman tree has
+	too few leaves.
+	* unpack.c (unpack): Fix check for EOB.
+	Remove now-unnecessary check for code out of range.
+
+2017-09-19  Jim Meyering  <meyering@fb.com>
+
+	maint: fix "make syntax-check": remove useless HAVE_UTIME_H definitions
+	* tailor.h: Don't define HAVE_UTIME_H.
+
+	maint: avoid "make syntax-check" failure due to old-NEWS modification
+	* cfg.mk (old_NEWS_hash): Update, to reflect recent NEWS correction.
+
+2017-09-19  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzexe: improve usage diagnostic
+	* gzexe.in (usage): Reword for clarity (Bug#28514).
+
+	misc: update --version copyright
+	* gunzip.in, gzexe.in, gzip.c, zcat.in, zdiff.in, zforce.in, zgrep.in:
+	* zless.in, zmore.in, znew.in: Update copyright year in --version
+	output to 2017.
+
+	maint: prefer HTTPS to HTTP, FTP in URLs
+
+	maint: copy bootstrap from Gnulib
+
+	maint: port to GCC 7.2
+	* configure.ac (WERROR_CFLAGS): Avoid -Wduplicated-branches.
+	* tailor.h (FALLTHROUGH): New macro, taken from Emacs.
+	* gzip.c (main): Use it.
+
+	maint: update .gitignore for recent Gnulib
+
+	build: update gnulib submodule to latest
+
+2017-05-07  Jim Meyering  <meyering@fb.com>
+
+	maint: also distribute a zip-compressed tarball
+	* configure.ac (AM_INIT_AUTOMAKE): Add dist-zip, for
+	those lacking gzip, 7zip, etc.  Suggested by Karl Berry in
+	https://bugs.gnu.org/25538.
+
+2017-03-13  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzip: port zdiff, zless to Busybox
+	Problem reported by Denys Zagorui (Bug#26088).
+	* tests/zdiff: Check that diff uses POSIX-format output.
+	* zless.in (less_version): Don't exit merely because 'less -V'
+	fails; instead, assume 'less' is compatible with an old version of
+	the original 'less'.  Busybox 'less -V' fails, but apparently its
+	'less' works anyway somehow.
+
+2017-02-06  Jim Meyering  <meyering@fb.com>
+
+	tests: avoid failure when running with no tty
+	* tests/help-version (zcat_setup): Export TERM=dumb, to avoid zless
+	malfunction.  Reported by Assaf Gordon in https://bugs.gnu.org/25636#8
+
+	gnulib: update to latest; and tests/init.sh and bootstrap
+
+	maint: change "time stamp" to "timestamp" globally
+	This avoids a new syntax-check failure.
+	* ChangeLog-2007: Perform that change.
+	* NEWS: Likewise.
+	* algorithm.doc: Likewise.
+	* doc/gzip.texi: Likewise.
+	* gunzip.in: Likewise.
+	* gzip.1: Likewise.
+	* gzip.c: Likewise.
+	* gzip.h: Likewise.
+	* m4/.gitignore: Likewise.
+	* sample/ztouch: Likewise.
+	* tests/timestamp: Likewise.
+	* unzip.c: Likewise.
+	* zip.c: Likewise.
+	* znew.1: Likewise.
+	* cfg.mk: Update the old news hash accordingly.
+
+2017-01-01  Jim Meyering  <meyering@fb.com>
+
+	maint: tweak a distcheck rule
+	* dist-check.mk (my-distcheck): Don't use --disable-nls.
+	That option is now unrecognized.
+
+	maint: update gnulib and copyright dates for 2017
+	* gnulib: Update to latest.
+	* all files: Run "make update-copyright".
+
+2016-11-08  Jim Meyering  <meyering@fb.com>
+
+	maint: use "returns_" rather than explicit comparison with "$?"
+	* tests/zdiff: Use "returns_ 1" rather than testing $? = 1.
+	* tests/hufts: Likewise.
+	* tests/timestamp: Likewise, but s/1/2/.
+
+2016-11-04  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzip: minor time stamp cleanups
+	* NEWS: Document this.
+	* gzip.c (get_method): Do not warn about MTIME out of range.
+	This should avoid useless chatter on hosts with 32-bit time_t
+	after the year 2038 (!).
+	(do_list): Do not pass junk time stamp to localtime.
+	(copy_stat): Do not report "time stamp restored" if restoration
+	fails.
+
+	gzip: --no-time cleanup
+	Problem reported by Jim Meyering (Bug#24826).
+	* gzip.c (longopts): Remove non-working no-time entry.
+	(help) [UNDOCUMENTED]: Don't document it.
+
+	gzip --no-name: avoid spurious warning
+	Problem reported by Jim Meyering (Bug#24826).
+	* tests/timestamp: Add a test from Jim Meyering to exercise the fix
+	* zip.c (zip): Treat unknown time stamps as 0.
+
+2016-10-24  Jim Meyering  <meyering@fb.com>
+
+	maint: update .gitignore files to ignore more generated files
+
+2016-10-02  Jim Meyering  <meyering@fb.com>
+
+	maint: avoid unwarranted "make syntax-check" failure
+	* tests/timestamp: Reorder "rm" arguments so the doubled-word
+	syntax-check rule does not detect a false positive "in in" here.
+
+	gnulib: update to latest
+
+2016-09-07  Paul Eggert  <eggert@cs.ucla.edu>
+
+	* doc/gzip.texi: Fix off-by-one timestamp.
+
+2016-09-06  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzip: fix some Y2038 etc. bugs
+	* NEWS: Document this.
+	* gzip.c (get_method): Warn about out-of-range MTIME,
+	and ignore it instead of relying on possibly-undefined behavior.
+	* tests/Makefile.am (TESTS): Add timestamp.
+	* tests/timestamp: New test.
+	* zip.c (zip): Warn about out-of-range file time stamp.
+
+2016-08-29  Jim Meyering  <meyering@fb.com>
+
+	maint: fix gzip-specific syntax-check rule
+	* cfg.mk (sc_gzip_copyright_check): This rule had two problems.
+	It was failing erroneously (the copyright date in gzip.c is fine),
+	yet it was complaining.  The first problem is that the rule's
+	diagnostic mentioned the wrong file: lib/version-etc.c, rather than
+	./gzip.c. The second problem is that it specified this file name
+	via "in_files" rather than the "in_vc_files" variable.
+
+2016-06-12  Paul Eggert  <eggert@penguin.cs.ucla.edu>
+
+	gzip: fix port to Atari by not defining ASMV
+	Problem reported by Helmut Karlowski in: http://bugs.gnu.org/23751
+	* tailor.h (ASMV) [ATARI || atarist]: Do not define.
+
+2016-06-12  Paul Eggert  <eggert@cs.ucla.edu>
+
+	gzip: drop mentions of Amiga, VMS
+	These platforms were not supported anyway, and their code was
+	suffering from bitrot.  This patch may also fix some file name
+	glitches on MS-Windowsish platforms.
+	* bootstrap.conf (gnulib_modules): Add dosname.
+	* gzip.c: Include dosname.h.
+	(shorten_name, treat_dir): Use last_component rather than looking
+	at path separators by hand.
+	* tailor.h: Remove sections on porting to VMS and to Amiga,
+	since dosname.h doesn't support these platforms anyway.
+	(PATH_SEP2, PATH_SEP3, STDC_HEADERS, SUFFIX_SEP, RECORD_IO)
+	(HAVE_CHOWN, HAVE_LSTAT, HAVE_SYS_DIR_H, direct): Remove.  All
+	uses removed.  Many uses replaced by calls to ISSLASH and/or
+	last_component.
+
+2016-04-29  Jim Meyering  <meyering@fb.com>
+
+	maint: arrange for better URLs in generated announcement message
+	* cfg.mk (url_dir_list): Define.  I had been correcting the generated
+	URLs by hand, just before the announcement.  This is better.
+
 2016-04-26  Jim Meyering  <meyering@fb.com>
+
+	maint: post-release administrivia
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* cfg.mk (old_NEWS_hash): Auto-update.
 
 	version 1.8
 	* NEWS: Record release date.
