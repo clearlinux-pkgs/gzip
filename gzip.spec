@@ -6,7 +6,7 @@
 #
 Name     : gzip
 Version  : 1.9
-Release  : 21
+Release  : 22
 URL      : http://mirrors.kernel.org/gnu/gzip/gzip-1.9.tar.xz
 Source0  : http://mirrors.kernel.org/gnu/gzip/gzip-1.9.tar.xz
 Source99 : http://mirrors.kernel.org/gnu/gzip/gzip-1.9.tar.xz.sig
