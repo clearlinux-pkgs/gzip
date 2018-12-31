@@ -3,6 +3,7 @@ Configure miss: fpurge
 Configure miss: __fseterr
 Configure miss: whether printf supports the 'n' directive
 Configure miss: whether fflush works on input streams
+Configure miss: 32-bit host C ABI
 Configure miss: strerror_r with POSIX signature
 Configure miss: whether C symbols are prefixed with underscore at the linker level
 Configure miss: whether fpurge is declared
