@@ -6,7 +6,7 @@
 #
 Name     : gzip
 Version  : 1.10
-Release  : 25
+Release  : 26
 URL      : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
 Source0  : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
 Source99 : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz.sig
