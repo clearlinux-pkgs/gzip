@@ -6,10 +6,10 @@
 #
 Name     : gzip
 Version  : 1.10
-Release  : 26
+Release  : 27
 URL      : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
 Source0  : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
-Source99 : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz.sig
+Source1 : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.3+ GPL-3.0 GPL-3.0+
@@ -31,7 +31,6 @@ uses it as the standard compression program for its system.
 Summary: bin components for the gzip package.
 Group: Binaries
 Requires: gzip-license = %{version}-%{release}
-Requires: gzip-man = %{version}-%{release}
 
 %description bin
 bin components for the gzip package.
@@ -69,35 +68,40 @@ man components for the gzip package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1546252974
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1564436873
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1546252974
+export SOURCE_DATE_EPOCH=1564436873
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gzip
 cp COPYING %{buildroot}/usr/share/package-licenses/gzip/COPYING
 %make_install
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/gzip
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
-%exclude /usr/bin/gzip
 /usr/bin/gunzip
 /usr/bin/gzexe
 /usr/bin/uncompress
