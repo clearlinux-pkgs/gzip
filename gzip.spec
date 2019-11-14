@@ -6,7 +6,7 @@
 #
 Name     : gzip
 Version  : 1.10
-Release  : 28
+Release  : 29
 URL      : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
 Source0  : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
 Source1 : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz.sig
@@ -14,6 +14,7 @@ Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.3+ GPL-3.0 GPL-3.0+
 Requires: gzip-bin = %{version}-%{release}
+Requires: gzip-info = %{version}-%{release}
 Requires: gzip-license = %{version}-%{release}
 Requires: gzip-man = %{version}-%{release}
 BuildRequires : grep
@@ -36,13 +37,12 @@ Requires: gzip-license = %{version}-%{release}
 bin components for the gzip package.
 
 
-%package doc
-Summary: doc components for the gzip package.
-Group: Documentation
-Requires: gzip-man = %{version}-%{release}
+%package info
+Summary: info components for the gzip package.
+Group: Default
 
-%description doc
-doc components for the gzip package.
+%description info
+info components for the gzip package.
 
 
 %package license
@@ -63,13 +63,14 @@ man components for the gzip package.
 
 %prep
 %setup -q -n gzip-1.10
+cd %{_builddir}/gzip-1.10
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564436873
+export SOURCE_DATE_EPOCH=1573772646
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -89,10 +90,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1564436873
+export SOURCE_DATE_EPOCH=1573772646
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gzip
-cp COPYING %{buildroot}/usr/share/package-licenses/gzip/COPYING
+cp %{_builddir}/gzip-1.10/COPYING %{buildroot}/usr/share/package-licenses/gzip/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 %make_install
 ## Remove excluded files
 rm -f %{buildroot}/usr/bin/gzip
@@ -116,13 +117,13 @@ rm -f %{buildroot}/usr/bin/gzip
 /usr/bin/zmore
 /usr/bin/znew
 
-%files doc
+%files info
 %defattr(0644,root,root,0755)
-%doc /usr/share/info/*
+/usr/share/info/gzip.info
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/gzip/COPYING
+/usr/share/package-licenses/gzip/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files man
 %defattr(0644,root,root,0755)
