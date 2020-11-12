@@ -6,10 +6,10 @@
 #
 Name     : gzip
 Version  : 1.10
-Release  : 29
-URL      : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
-Source0  : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
-Source1 : http://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz.sig
+Release  : 30
+URL      : https://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
+Source0  : https://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
+Source1  : https://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.3+ GPL-3.0 GPL-3.0+
@@ -70,14 +70,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573772646
+export SOURCE_DATE_EPOCH=1605142953
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -87,10 +87,10 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1573772646
+export SOURCE_DATE_EPOCH=1605142953
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gzip
 cp %{_builddir}/gzip-1.10/COPYING %{buildroot}/usr/share/package-licenses/gzip/8624bcdae55baeef00cd11d5dfcfa60f68710a02
