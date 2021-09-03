@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x7FD9FCCB000BEEEE (meyering@fb.com)
 #
 Name     : gzip
-Version  : 1.10
-Release  : 30
-URL      : https://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
-Source0  : https://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz
-Source1  : https://mirrors.kernel.org/gnu/gzip/gzip-1.10.tar.xz.sig
+Version  : 1.11
+Release  : 31
+URL      : https://mirrors.kernel.org/gnu/gzip/gzip-1.11.tar.xz
+Source0  : https://mirrors.kernel.org/gnu/gzip/gzip-1.11.tar.xz
+Source1  : https://mirrors.kernel.org/gnu/gzip/gzip-1.11.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.3+ GPL-3.0 GPL-3.0+
@@ -62,23 +62,23 @@ man components for the gzip package.
 
 
 %prep
-%setup -q -n gzip-1.10
-cd %{_builddir}/gzip-1.10
+%setup -q -n gzip-1.11
+cd %{_builddir}/gzip-1.11
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605142953
+export SOURCE_DATE_EPOCH=1630688058
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -90,10 +90,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1605142953
+export SOURCE_DATE_EPOCH=1630688058
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gzip
-cp %{_builddir}/gzip-1.10/COPYING %{buildroot}/usr/share/package-licenses/gzip/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/gzip-1.11/COPYING %{buildroot}/usr/share/package-licenses/gzip/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 %make_install
 ## Remove excluded files
 rm -f %{buildroot}/usr/bin/gzip
