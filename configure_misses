@@ -11,6 +11,7 @@ Configure miss: strerror_r with POSIX signature
 Configure miss: sys/sdt.h
 Configure miss: underline in external names
 Configure miss: whether C symbols are prefixed with underscore at the linker level
+Configure miss: whether ctype.h defines __header_inline
 Configure miss: whether fflush works on input streams
 Configure miss: whether fpurge is declared
 Configure miss: whether isnan(float) works
